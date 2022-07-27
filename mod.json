@@ -6,6 +6,9 @@
     "version": "1.0",
     "manifestVersion": 1,
     "files": {
+        "text": [
+            "languages/en/"
+        ],
         "plugins": [
             "js/discord-rpc/",
             "js/plugins/"

@@ -6,6 +6,8 @@ async function DRPC_Handler() {
     let leaderAssetKey, titleAssetKey;
     let startTimestamp = Date.now();
 
+    const langTexts = LanguageManager._data["en"]["text"]["HK_DiscordRPC"]["RichPresence"];
+
     // Initial delay for sure
     await asyncDelay(3000);
 
@@ -28,8 +30,6 @@ async function DRPC_Handler() {
 
         old_scene = scene;
         old_leader = leader;
-
-        console.log("Scene:", scene, "| Leader:", leader);
 
         // Leader sprite for Discord asset
         switch (leader.actorId()) {
@@ -87,16 +87,16 @@ async function DRPC_Handler() {
             case "Scene_Boot":
                 startTimestamp = Date.now(); // Sets new start timestamp
                 await DRPC.setActivity({
-                    state: "About to start game...",
+                    state: langTexts.states.in_boot,
                     largeImageKey: "char_omori",
-                    largeImageText: "OMORI",
+                    largeImageText: langTexts.texts.omori,
                     startTimestamp: startTimestamp
                 });
                 break;
 
             case "Scene_OmoriTitleScreen":
                 await DRPC.setActivity({
-                    state: "In title menu",
+                    state: langTexts.states.in_title,
                     largeImageKey: titleAssetKey,
                     startTimestamp: startTimestamp
                 });
@@ -104,11 +104,11 @@ async function DRPC_Handler() {
 
             case "Scene_OmoriFile":
                 await DRPC.setActivity({
-                    state: "In saves menu",
+                    state: langTexts.states.in_title,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "picnic",
-                    smallImageText: "MARI's picnic basket",
+                    smallImageText: langTexts.texts.picnic_basket,
                     startTimestamp: startTimestamp
                 });
                 break;
@@ -116,7 +116,7 @@ async function DRPC_Handler() {
             case "Scene_Map":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: `Playing as ${leader.name()}`,
+                    state: `${langTexts.states.in_map} ${leader.name()}`,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -126,7 +126,7 @@ async function DRPC_Handler() {
             case "Scene_Menu":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Paused",
+                    state: langTexts.states.in_menu,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -136,7 +136,7 @@ async function DRPC_Handler() {
             case "Scene_OmoMenuEquip":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Paused, in EQUIP menu",
+                    state: langTexts.states.in_menu_equip,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -146,7 +146,7 @@ async function DRPC_Handler() {
             case "Scene_OmoMenuItem":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Paused, in ITEMS menu",
+                    state: langTexts.states.in_menu_items,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -156,7 +156,7 @@ async function DRPC_Handler() {
             case "Scene_OmoMenuSkill":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Paused, in SKILLS menu",
+                    state: langTexts.states.in_menu_skills,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -166,7 +166,7 @@ async function DRPC_Handler() {
             case "Scene_OmoMenuOptions":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Paused, in OPTIONS menu",
+                    state: langTexts.states.in_menu_options,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -176,7 +176,7 @@ async function DRPC_Handler() {
             case "Scene_Battle":
                 await DRPC.setActivity({
                     details: $dataTroops[$gameTroop._troopId].name,
-                    state: "In the battle",
+                    state: langTexts.states.in_battle,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -186,11 +186,11 @@ async function DRPC_Handler() {
             case "Scene_OmoriQuest":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Watching QUESTS",
+                    state: langTexts.states.in_quests,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "face_mari",
-                    smallImageText: "MARI",
+                    smallImageText: langTexts.texts.mari,
                     startTimestamp: startTimestamp
                 });
                 break;
@@ -198,11 +198,11 @@ async function DRPC_Handler() {
             case "Scene_OmoriBestiary":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Watching FOES FACTS!",
+                    state: langTexts.states.in_foes_facts,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "foesfacts",
-                    smallImageText: "FOES FACTS!",
+                    smallImageText: langTexts.texts.foes_facts,
                     startTimestamp: startTimestamp
                 });
                 break;
@@ -210,11 +210,11 @@ async function DRPC_Handler() {
             case "Scene_OmoriBlackLetterMap":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Watching MAP",
+                    state: langTexts.states.in_blackletter_map,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "map",
-                    smallImageText: "MAP",
+                    smallImageText: langTexts.texts.blackletter_map,
                     startTimestamp: startTimestamp
                 });
                 break;
@@ -236,11 +236,11 @@ async function DRPC_Handler() {
 
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Watching PHOTO ALBUM",
+                    state: langTexts.states.in_photoalbum,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: albumIconAssetKey,
-                    smallImageText: "PHOTO ALBUM",
+                    smallImageText: langTexts.texts.photoalbum,
                     startTimestamp: startTimestamp
                 });
                 break;
@@ -248,11 +248,11 @@ async function DRPC_Handler() {
             case "Scene_OmoriItemShop":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "In the shop",
+                    state: langTexts.states.in_shop,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "mailbox",
-                    smallImageText: "Mailbox (Shop)",
+                    smallImageText: langTexts.texts.shop,
                     startTimestamp: startTimestamp
                 });
                 break;
@@ -260,11 +260,11 @@ async function DRPC_Handler() {
             case "Scene_OmoBlackLetterMenu":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "In HANGMAN",
+                    state: langTexts.states.in_hangman,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "hangman",
-                    smallImageText: "HANGMAN",
+                    smallImageText: langTexts.texts.hangman,
                     startTimestamp: startTimestamp
                 });
                 break;
@@ -272,11 +272,11 @@ async function DRPC_Handler() {
             case "Scene_SlotMachine":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: "Playing to Slots",
+                    state: langTexts.states.in_slots,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "slotmachine",
-                    smallImageText: "Slot Machine",
+                    smallImageText: langTexts.texts.slotmachine,
                     startTimestamp: startTimestamp
                 });
                 break;
