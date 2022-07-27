@@ -114,6 +114,7 @@ class DiscordRPC extends EventEmitter {
   }
 
   _onRpcMessage(message) {
+    //console.debug('[Discord IPC] Command:', message.cmd, '| Event:', message.evt, '| Data:', message.data);
     if (message.cmd === _DiscordRPC_Commands.DISPATCH && message.evt === _DiscordRPC_Events.READY) {
       if (message.data.user) {
         this.user = message.data.user;
