@@ -17,6 +17,12 @@ DRPC.transport.on('close', () => {
   console.log('[Discord RPC] Disconnected by IPC');
 });
 
+nw.Window.get().on('close', function() {
+  // Close Discord IPC connection on OMORI closure
+  DRPC.destroy();
+  this.close(true);
+});
+
 {
   async function DRPC_Loop() {
     console.log('[Discord RPC] Started autoconnection');
