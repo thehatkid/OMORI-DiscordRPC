@@ -1,6 +1,7 @@
 const asyncDelay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 async function DRPC_Handler() {
+    let handlerLoop = true;
     let scene, leader, chapter;
     let old_scene, old_leader, old_chapter;
     let leaderAssetKey, titleAssetKey;
@@ -8,25 +9,21 @@ async function DRPC_Handler() {
 
     const langTexts = LanguageManager._data["en"]["text"]["HK_DiscordRPC"]["RichPresence"];
 
-    // Initial delay for sure
-    await asyncDelay(3000);
+    while (handlerLoop === true) {
+        await asyncDelay(250); // Update every 0.25 seconds
 
-    while (isEnabledDRPC) {
-        await asyncDelay(500); // Update every 0.5 seconds
-
+        if (!isEnabledDRPC === true) continue;
         if (!SceneManager._scene) continue;
         if ($gameParty === null) continue;
 
         scene = SceneManager._scene;
         leader = $gameParty.members()[0];
-        chapter = $gameVariables.value(23);
+        chapter = $gameVariables.value(23) ? $gameVariables.value(23) : "PROLOGUE";
 
         if (
             scene === old_scene &&
             leader.actorId() === old_leader.actorId()
-        ) {
-            continue;
-        }
+        ) continue;
 
         old_scene = scene;
         old_leader = leader;
@@ -104,7 +101,7 @@ async function DRPC_Handler() {
 
             case "Scene_OmoriFile":
                 await DRPC.setActivity({
-                    state: langTexts.states.in_title,
+                    state: langTexts.states.in_saves,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "picnic",

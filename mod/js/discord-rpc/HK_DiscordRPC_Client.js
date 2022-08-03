@@ -69,15 +69,17 @@ class DiscordRPC extends EventEmitter {
   }
 
   connect(clientId) {
-    if (this._connectPromise) {
+    if (this._connectPromise && this._connectPromise._connected === false) {
       return this._connectPromise;
     }
     this._connectPromise = new Promise((resolve, reject) => {
+      this._connected = false;
       this.clientId = clientId;
       const timeout = setTimeout(() => reject(new Error('RPC_CONNECTION_TIMEOUT')), 10e3);
       timeout.unref();
       this.once('connected', () => {
         clearTimeout(timeout);
+        this._connected = true;
         resolve(this);
       });
       this.transport.once('close', () => {
