@@ -17,6 +17,7 @@ RichPresence:
         in_shop: "In the shop"
         in_hangman: "In HANGMAN"
         in_slots: "Playing slots"
+        out_of_focus: "(in background)"
 
     texts:
         omori: "OMORI"

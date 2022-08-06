@@ -2,8 +2,8 @@ const asyncDelay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 async function DRPC_Handler() {
     let handlerLoop = true;
-    let scene, leader, chapter;
-    let old_scene, old_leader, old_chapter;
+    let scene, leader, chapter, hasFocus;
+    let old_scene, old_leader, old_chapter, old_hasFocus;
     let leaderAssetKey, titleAssetKey;
     let startTimestamp = Date.now();
 
@@ -19,14 +19,17 @@ async function DRPC_Handler() {
         scene = SceneManager._scene;
         leader = $gameParty.members()[0];
         chapter = $gameVariables.value(23) ? $gameVariables.value(23) : "PROLOGUE";
+        hasFocus = window.document.hasFocus();
 
         if (
             scene === old_scene &&
-            leader.actorId() === old_leader.actorId()
+            leader.actorId() === old_leader.actorId() &&
+            hasFocus === old_hasFocus
         ) continue;
 
         old_scene = scene;
         old_leader = leader;
+        old_hasFocus = hasFocus;
 
         // Leader sprite for Discord asset
         switch (leader.actorId()) {
@@ -93,7 +96,7 @@ async function DRPC_Handler() {
 
             case "Scene_OmoriTitleScreen":
                 await DRPC.setActivity({
-                    state: langTexts.states.in_title,
+                    state: langTexts.states.in_title + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: titleAssetKey,
                     startTimestamp: startTimestamp
                 });
@@ -113,7 +116,7 @@ async function DRPC_Handler() {
             case "Scene_Map":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: `${langTexts.states.in_map} ${leader.name()}`,
+                    state: `${langTexts.states.in_map} ${leader.name()}` + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -173,7 +176,7 @@ async function DRPC_Handler() {
             case "Scene_Battle":
                 await DRPC.setActivity({
                     details: $dataTroops[$gameTroop._troopId].name,
-                    state: langTexts.states.in_battle,
+                    state: langTexts.states.in_battle + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -183,7 +186,7 @@ async function DRPC_Handler() {
             case "Scene_OmoriQuest":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: langTexts.states.in_quests,
+                    state: langTexts.states.in_quests + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "face_mari",
@@ -195,7 +198,7 @@ async function DRPC_Handler() {
             case "Scene_OmoriBestiary":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: langTexts.states.in_foes_facts,
+                    state: langTexts.states.in_foes_facts + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "foesfacts",
@@ -207,7 +210,7 @@ async function DRPC_Handler() {
             case "Scene_OmoriBlackLetterMap":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: langTexts.states.in_blackletter_map,
+                    state: langTexts.states.in_blackletter_map + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "map",
@@ -233,7 +236,7 @@ async function DRPC_Handler() {
 
                 await DRPC.setActivity({
                     details: chapter,
-                    state: langTexts.states.in_photoalbum,
+                    state: langTexts.states.in_photoalbum + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: albumIconAssetKey,
@@ -245,7 +248,7 @@ async function DRPC_Handler() {
             case "Scene_OmoriItemShop":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: langTexts.states.in_shop,
+                    state: langTexts.states.in_shop + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "mailbox",
@@ -257,7 +260,7 @@ async function DRPC_Handler() {
             case "Scene_OmoBlackLetterMenu":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: langTexts.states.in_hangman,
+                    state: langTexts.states.in_hangman + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "hangman",
@@ -269,7 +272,7 @@ async function DRPC_Handler() {
             case "Scene_SlotMachine":
                 await DRPC.setActivity({
                     details: chapter,
-                    state: langTexts.states.in_slots,
+                    state: langTexts.states.in_slots + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     smallImageKey: "slotmachine",

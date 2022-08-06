@@ -7,6 +7,8 @@ const appClientId = '1000508661979955260';
 let isEnabledDRPC = false;
 let DRPCloop = true;
 
+
+// Discord RPC events
 DRPC.on('ready', () => {
   isEnabledDRPC = true;
   console.log(`[Discord RPC] Logged in as ${DRPC.user.username}#${DRPC.user.discriminator} (${DRPC.user.id})`);
@@ -17,11 +19,14 @@ DRPC.transport.on('close', () => {
   console.log('[Discord RPC] Disconnected by IPC');
 });
 
+
+// NW.js window events
 nw.Window.get().on('close', function() {
   // Close Discord IPC connection on OMORI closure
   DRPC.destroy();
   this.close(true);
 });
+
 
 {
   async function DRPC_Loop() {
