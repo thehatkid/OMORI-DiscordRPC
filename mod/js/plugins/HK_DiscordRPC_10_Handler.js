@@ -14,7 +14,7 @@ function getNameOf(obj) {
 
 async function DRPC_Handler() {
     let handlerLoop = true;
-    let scene, leader, chapter, hasFocus;
+    let scene, leader, chapter, hasFocus, isFaraway;
     let old_scene, old_leader, old_chapter, old_hasFocus;
     let leaderAssetKey, titleAssetKey;
     let startTimestamp = Date.now();
@@ -31,6 +31,7 @@ async function DRPC_Handler() {
         scene = SceneManager._scene;
         leader = $gameParty.members()[0];
         chapter = $gameVariables.value(23) ? $gameVariables.value(23) : "PROLOGUE";
+        isFaraway = $gameSwitches.value(7);
         hasFocus = window.document.hasFocus();
 
         if (
@@ -273,7 +274,7 @@ async function DRPC_Handler() {
                     state: langTexts.states.in_shop + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
-                    smallImageKey: "mailbox",
+                    smallImageKey: isFaraway ? "fa_shop" : "mailbox",
                     smallImageText: langTexts.texts.shop,
                     startTimestamp: startTimestamp
                 });
