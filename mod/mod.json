@@ -2,8 +2,8 @@
     "$schema": "https://rph.space/oneloader.manifestv1.schema.json",
     "id": "discordintegration",
     "name": "Discord Integration",
-    "description": "Made by hat_kid#8773",
-    "version": "1.0.0",
+    "description": "Adds Discord Rich Presence and more. Made by hat_kid#8773",
+    "version": "1.1.0",
     "manifestVersion": 1,
     "files": {
         "text": [
