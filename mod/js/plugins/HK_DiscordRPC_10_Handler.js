@@ -1,5 +1,17 @@
 const asyncDelay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+// Cursed, but works. lol. (by Draught)
+function getNameOf(obj) {
+    let s = Symbol();
+    obj[s] = () => { throw new Error() };
+
+    try {
+        obj[s]();
+    } catch (e) {
+        return e.stack.match(/\s+at (\w+)/)[1];
+    }
+}
+
 async function DRPC_Handler() {
     let handlerLoop = true;
     let scene, leader, chapter, hasFocus;
@@ -83,7 +95,7 @@ async function DRPC_Handler() {
         }
 
         // Update rich presence for each scenes
-        switch (scene.constructor.name) {
+        switch (getNameOf(scene)) {
             case "Scene_Boot":
                 startTimestamp = Date.now(); // Sets new start timestamp
                 await DRPC.setActivity({
@@ -117,6 +129,16 @@ async function DRPC_Handler() {
                 await DRPC.setActivity({
                     details: chapter,
                     state: `${langTexts.states.in_map} ${leader.name()}` + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
+                    largeImageKey: leaderAssetKey,
+                    largeImageText: leader.name(),
+                    startTimestamp: startTimestamp
+                });
+                break;
+
+            case "Scene_Gameover":
+                await DRPC.setActivity({
+                    details: chapter,
+                    state: langTexts.states.in_game_over,
                     largeImageKey: leaderAssetKey,
                     largeImageText: leader.name(),
                     startTimestamp: startTimestamp
@@ -265,6 +287,42 @@ async function DRPC_Handler() {
                     largeImageText: leader.name(),
                     smallImageKey: "hangman",
                     smallImageText: langTexts.texts.hangman,
+                    startTimestamp: startTimestamp
+                });
+                break;
+
+            case "Scene_BlackJack":
+                await DRPC.setActivity({
+                    details: chapter,
+                    state: langTexts.states.in_blackjack + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
+                    largeImageKey: leaderAssetKey,
+                    largeImageText: leader.name(),
+                    smallImageKey: "blackjack",
+                    smallImageText: langTexts.texts.blackjack,
+                    startTimestamp: startTimestamp
+                });
+                break;
+
+            case "Scene_PetRocks":
+                await DRPC.setActivity({
+                    details: chapter,
+                    state: langTexts.states.in_petrocks + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
+                    largeImageKey: leaderAssetKey,
+                    largeImageText: leader.name(),
+                    smallImageKey: "petrocks",
+                    smallImageText: langTexts.texts.petrocks,
+                    startTimestamp: startTimestamp
+                });
+                break;
+
+            case "Scene_SpaceInvader":
+                await DRPC.setActivity({
+                    details: chapter,
+                    state: langTexts.states.in_spaceinvader + (hasFocus ? "" : ` ${langTexts.states.out_of_focus}`),
+                    largeImageKey: leaderAssetKey,
+                    largeImageText: leader.name(),
+                    smallImageKey: "spaceinvader",
+                    smallImageText: langTexts.texts.spaceinvader,
                     startTimestamp: startTimestamp
                 });
                 break;

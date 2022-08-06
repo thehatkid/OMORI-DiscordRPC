@@ -53,7 +53,7 @@ nw.Window.get().on('close', function() {
           isEnabledDRPC = false;
           switch (e.message) {
             case "Could not connect to Discord IPC":
-            case "Connection closed":
+            case "Connection Closed":
               // Ignoring due to not opened any Discord clients, 
               // or Discord client is starting up.
               break;
